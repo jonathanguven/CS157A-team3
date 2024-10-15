@@ -11,7 +11,7 @@
 		<table>
 			<tr>
 				<td>User Name</td>
-				<td><input type="text" name="uname"></td>
+				<td><input type="text" name="username"></td>
 			</tr>
 			<tr>
 				<td>Password</td>
@@ -27,7 +27,7 @@
 			</tr>
 			<tr>
 				<td></td>
-				<td><input type="submit" name="register"></td>
+				<td><input type="submit" value="register"></td>
 			</tr>
 		</table>
 	</form>
