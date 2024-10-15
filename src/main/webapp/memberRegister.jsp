@@ -12,6 +12,10 @@
 			<tr>
 				<td>User Name</td>
 				<td><input type="text" name="uname"></td>
+<<<<<<< HEAD
+=======
+				<td><input type="text" name="username"></td>
+>>>>>>> master
 			</tr>
 			<tr>
 				<td>Password</td>
@@ -28,6 +32,10 @@
 			<tr>
 				<td></td>
 				<td><input type="submit" name="register"></td>
+<<<<<<< HEAD
+=======
+				<td><input type="submit" value="register"></td>
+>>>>>>> master
 			</tr>
 		</table>
 	</form>

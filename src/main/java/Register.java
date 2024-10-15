@@ -1,11 +1,9 @@
-
-
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Servlet implementation class Register
@@ -21,7 +19,6 @@ public class Register extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -29,19 +26,20 @@ public class Register extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
-
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String uname = request.getParameter("uname");
-		String password = request.getParameter("password");
-		String email = request.getParameter("email");
-		String phone = request.getParameter("phone");
-		Member member = new Member(uname, password, email, phone);
-		RegisterDao rDao = new RegisterDao();
-		String res = rDao.insert(member);
-		response.getWriter().print(res);
+		String username=request.getParameter("username");
+		String password=request.getParameter("password");
+		String email=request.getParameter("email");
+		String phone=request.getParameter("phone");
+		String role=request.getParameter("role");
+		Member member=new Member(username, password, email, phone, role);
+		RegisterDao rDao=new RegisterDao();
+		String result=rDao.insert(member);
+		response.getWriter().print(result);
+
 	}
 
 }
