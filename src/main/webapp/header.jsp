@@ -125,14 +125,16 @@
     <header class="header">
         <nav class="nav">
             <div class="logo">
-                Grocery Gander
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M2.5 5.5L5 3.8a2.9 2.9 0 0 1 2-.8h10c.8 0 1.5.3 2 .8l2.5 1.7"/>
-                    <path d="M2.5 14.5L5 16.2c.5.5 1.2.8 2 .8h10c.8 0 1.5-.3 2-.8l2.5-1.7"/>
-                    <path d="M2.5 10h19"/>
-                    <path d="M10 3.5v17"/>
-                    <path d="M14 3.5v17"/>
-                </svg>
+                 <a href="home.jsp" style="text-decoration: none; color: white; display: flex; align-items: center;">
+                    Grocery Gander
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2.5 5.5L5 3.8a2.9 2.9 0 0 1 2-.8h10c.8 0 1.5.3 2 .8l2.5 1.7"/>
+                        <path d="M2.5 14.5L5 16.2c.5.5 1.2.8 2 .8h10c.8 0 1.5-.3 2-.8l2.5-1.7"/>
+                        <path d="M2.5 10h19"/>
+                        <path d="M10 3.5v17"/>
+                        <path d="M14 3.5v17"/>
+                    </svg>
+                </a>
             </div>
             <div class="search-container">
                 <form action="search" method="get">
