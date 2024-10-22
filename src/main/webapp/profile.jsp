@@ -33,7 +33,12 @@
             max-width: 600px;
             text-align: center;
         }
-        .add-product-button {
+        .button-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1rem; /* Space above the buttons */
+        }
+        .icon-button {
             width: 120px;
             height: 120px;
             background-color: #4CAF50;
@@ -48,25 +53,24 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-        .add-product-button:hover {
+        .icon-button:hover {
             background-color: #45a049;
         }
-        .add-product-button:focus {
+        .icon-button:focus {
             outline: none;
         }
-        .plus-icon {
+        .plus-icon, .permission-icon {
             font-size: 3rem;
         }
-        .add-text {
+        .button-text {
             font-size: 1rem;
-            margin-top: 5px; /* Small space between the + and text */
+            margin-top: 5px; /* Small space between the icon and text */
         }
     </style>
 </head>
 <body>
     <div class="content">
         <div class="profile-container">
-            <!-- Display the logged-in user's username -->
             <h2>
                 <% 
                     String username = null;
@@ -88,11 +92,19 @@
                 %>
             </h2>
 
-            <!-- Add New Product Icon with Text Inside the Button -->
-            <button class="add-product-button" onclick="location.href='addProduct.jsp'">
-                <div class="plus-icon">+</div>
-                <div class="add-text">Add New Product</div>
-            </button>
+            <div class="button-container">
+                <!-- Add New Product Icon with Text Inside the Button -->
+                <button class="icon-button" onclick="location.href='addProduct.jsp'">
+                    <div class="plus-icon">+</div>
+                    <div class="button-text">Add New Product</div>
+                </button>
+
+                <!-- Request Selling Permission Icon with Text Inside the Button -->
+                <button class="icon-button" onclick="location.href='requestPermission.jsp'">
+                    <div class="permission-icon">&#9881;</div> <!-- Wrench icon for permissions -->
+                    <div class="button-text">Request Selling Permission</div>
+                </button>
+            </div>
         </div>
     </div>
 </body>
