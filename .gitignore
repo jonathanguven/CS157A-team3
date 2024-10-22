@@ -1,0 +1,8 @@
+# Ignore everything
+*
+
+# Do not ignore directories
+!*/
+
+# Do not ignore the src directory and its contents
+!src/
