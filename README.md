@@ -1,6 +1,6 @@
 # Grocery Gander
 
-Foobar is a virtual representation of a farmer's market. Eliminating the question of "what are they going to sell?" by providing a list of products that vendors are selling prior to the physical arrival to the farmer's market.
+GroceryGander is a virtual representation of a farmer's market. Eliminating the question of "what are they going to sell?" by providing a list of products that vendors are selling prior to the physical arrival to the farmer's market.
 
 ## Installation
 
