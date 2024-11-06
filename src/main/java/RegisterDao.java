@@ -3,11 +3,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-
 public class RegisterDao {
-	private String dburl = "jdbc:mysql://localhost:3306/userdb";
+	private String dburl = "jdbc:mysql://localhost:3306/grocery_gander_db";
 	private String dbuname = "root";
-	private String dbpassword = "mysql";
+	private String dbpassword = "password";
 	private String dbdriver = "com.mysql.jdbc.Driver";
 
 	 public void loadDriver(String dbDriver) {
@@ -48,7 +47,7 @@ public class RegisterDao {
 		        ps.executeUpdate();
 		    } catch (SQLException e) {
 		        e.printStackTrace();
-		        result = "Data not entered";
+		        result = "Data not entered: " + e.getMessage();  // Pass the error message
 		    }
 		    return result;
 		}

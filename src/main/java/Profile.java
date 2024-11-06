@@ -17,10 +17,14 @@ public class Profile extends HttpServlet {
         HttpSession session = request.getSession(false); // Get session without creating a new one
 
         String username = null;
+        String role = null;
+        Integer userId = null;
 
         // Check for session attribute
         if (session != null) {
             username = (String) session.getAttribute("username");
+            role = (String) session.getAttribute("role");
+            userId = (Integer) session.getAttribute("user_id"); // assuming user_id is stored as Integer
         }
 
         // Check for the username in cookies (if you're using cookies)
@@ -40,6 +44,10 @@ public class Profile extends HttpServlet {
         if (username == null) {
             response.sendRedirect("login.jsp");
         } else {
+            // Print user_id and role to console
+            System.out.println("User ID: " + userId);
+            System.out.println("Role: " + role);
+
             // Proceed to profile.jsp if the user is logged in
             request.getRequestDispatcher("profile.jsp").forward(request, response);
         }

@@ -5,9 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class LoginDao {
-	private String dburl = "jdbc:mysql://localhost:3306/userdb";
+	private String dburl = "jdbc:mysql://localhost:3306/grocery_gander_db";
 	private String dbuname = "root";
-	private String dbpassword = "mysql";
+	private String dbpassword = "password";
 	private String dbdriver = "com.mysql.jdbc.Driver";
 
     // Load the JDBC Driver

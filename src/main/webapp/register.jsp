@@ -121,7 +121,7 @@
             var adminCodeInput = document.getElementById('adminCode');
 
             if (roleSelect.value === 'admin') {
-                if (adminCodeInput.value !== 'groceryganderisthebest') {
+                if (adminCodeInput.value !== 'groceryganderiscool') {
                     e.preventDefault(); // Prevent form submission
                     alert('Invalid admin code. Please try again.');
                 }
