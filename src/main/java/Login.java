@@ -4,7 +4,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 
 @WebServlet("/login")
@@ -15,18 +14,21 @@ public class Login extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        // Call the DAO to validate credentials
+        // Assuming LoginDao now returns user ID on successful validation, -1 on failure
         LoginDao loginDao = new LoginDao();
         
-        System.out.println("Username: " + username);
-        System.out.println("Password: " + password);
+        int userId = loginDao.validateAndGetUserId(username, password); // This method needs to be implemented
 
-        
-        if (loginDao.validate(username, password)) {
-            // If valid, create a session and set cookies
+        if (userId != -1) {
+            // If valid, create a session and set cookies for username and user_id
             Cookie loginCookie = new Cookie("username", username);
             loginCookie.setMaxAge(60 * 60 * 24); // Cookie will last 1 day
             response.addCookie(loginCookie);
+
+            // Set user_id cookie
+            Cookie userIdCookie = new Cookie("user_id", String.valueOf(userId));
+            userIdCookie.setMaxAge(60 * 60 * 24); // Same lifespan
+            response.addCookie(userIdCookie);
 
             // Redirect to the profile or home page
             response.sendRedirect("profile.jsp");

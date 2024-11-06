@@ -54,4 +54,31 @@ public class LoginDao {
 
         return status;
     }
+    
+    public int validateAndGetUserId(String username, String password) {
+        loadDriver(dbdriver);
+        Connection con = getConnection();
+        String sql = "SELECT user_id FROM user WHERE username = ? AND password = ?"; // Ensure your table and column names match
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("user_id");  // Successfully validated and return the user_id
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return -1;  // Return -1 or any other appropriate error code if validation fails
+    }
 }

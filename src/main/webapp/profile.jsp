@@ -100,10 +100,30 @@
                 </button>
 
                 <!-- Request Selling Permission Icon with Text Inside the Button -->
-                <button class="icon-button" onclick="location.href='requestPermission.jsp'">
-                    <div class="permission-icon">&#9881;</div> <!-- Wrench icon for permissions -->
-                    <div class="button-text">Request Selling Permission</div>
-                </button>
+				<button class="icon-button" onclick="requestPermission()">
+				    <div class="permission-icon">&#9881;</div> <!-- Wrench icon for permissions -->
+				    <div class="button-text">Request Selling Permission</div>
+				</button>
+				
+				<!-- New Seller's Request Icon -->
+				<button class="icon-button" onclick="location.href='sellersRequest.jsp'">
+				    <div class="permission-icon">&#128221;</div> <!-- Document icon for Seller's Request -->
+				    <div class="button-text">Seller's Request</div>
+				</button>
+
+<script>
+function requestPermission() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "SellRequest", true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            alert(xhr.responseText);
+        }
+    };
+    xhr.send();
+}
+</script>
+
             </div>
         </div>
     </div>
