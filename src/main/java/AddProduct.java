@@ -21,17 +21,16 @@ import jakarta.servlet.http.Part;
 public class AddProduct extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    // Database connection parameters
     private static final String DB_URL = "jdbc:mysql://localhost:3306/grocery_gander_db";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "password";
-    private static final String UPLOAD_DIRECTORY = "path/to/upload/directory"; // Change this to your upload directory
+    private static final String UPLOAD_DIRECTORY = "path/to/upload/directory"; // Update to your upload directory
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
-        // Retrieving the form data
+        // Retrieving form data
         String productName = request.getParameter("productName");
         String location = request.getParameter("location");
         String priceStr = request.getParameter("price");
@@ -39,36 +38,29 @@ public class AddProduct extends HttpServlet {
         String description = request.getParameter("description");
         String categoryStr = request.getParameter("category");
 
-        // Validate required fields
         if (productName == null || productName.trim().isEmpty()) {
             out.println("<h1>Product name is required.</h1>");
             return;
         }
 
-        // Get the file part (optional)
-        Part filePart = request.getPart("image"); // Retrieve the file part
-        String imageFileName = filePart.getSubmittedFileName(); // Get the file name
+        Part filePart = request.getPart("image");
+        String imageFileName = filePart.getSubmittedFileName();
 
-        // Validate price and quantity
         if (priceStr == null || priceStr.trim().isEmpty() || quantityStr == null || quantityStr.trim().isEmpty() || categoryStr == null || categoryStr.trim().isEmpty()) {
             out.println("<h1>Price, Quantity, and Category are required.</h1>");
             return;
         }
 
-        // Parse the price and quantity
         double price = Double.parseDouble(priceStr.trim());
         int quantity = Integer.parseInt(quantityStr.trim());
         int category = Integer.parseInt(categoryStr.trim());
 
-        // Handle file upload
         if (filePart != null && imageFileName != null && !imageFileName.isEmpty()) {
-            // Create the upload directory if it doesn't exist
             File uploadDir = new File(UPLOAD_DIRECTORY);
             if (!uploadDir.exists()) {
                 uploadDir.mkdirs();
             }
 
-            // Save the file to the upload directory
             File file = new File(uploadDir, imageFileName);
             try {
                 Files.copy(filePart.getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -79,21 +71,22 @@ public class AddProduct extends HttpServlet {
             }
         }
 
-        // Retrieve the seller_id from the session
+        // Retrieve seller_id from session
+     // Debugging session attributes
+        System.out.println("Session ID: " + request.getSession().getId());  // Session ID for tracking
         Integer sellerId = (Integer) request.getSession().getAttribute("seller_id");
+        System.out.println("Seller ID: " + sellerId);
 
-        // Check if seller_id exists in the session
+        // Debugging: Check if seller_id is present in the session
+        System.out.println("Seller ID retrieved from session: " + sellerId);
+
         if (sellerId == null) {
             out.println("<h1>Error: You must be logged in as a seller to add a product.</h1>");
-            return; // Prevent further execution if the seller_id is missing
+            return;
         }
-        
-        // Debugging: Print out the seller_id to check if it's correct
-        System.out.println("Seller ID from session: " + sellerId);
 
-        // Check if the seller is approved
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-            String approvalCheckQuery = "SELECT is_approved FROM sellers WHERE seller_id = ?";
+            String approvalCheckQuery = "SELECT is_approved FROM seller WHERE seller_id = ?";
             PreparedStatement stmt = conn.prepareStatement(approvalCheckQuery);
             stmt.setInt(1, sellerId);
 
@@ -101,12 +94,15 @@ public class AddProduct extends HttpServlet {
             if (rs.next()) {
                 int isApproved = rs.getInt("is_approved");
 
-                // Check if the seller is approved
+                // Debugging: Print out the is_approved status
+                System.out.println("Approval status for seller ID " + sellerId + ": " + isApproved);
+
                 if (isApproved == 0) {
                     out.println("<h1>Error: You must be an approved seller to add a product.</h1>");
-                    return; // Seller is not approved, do not proceed
+                    return;
                 }
             } else {
+                System.out.println("No seller found with seller_id: " + sellerId);
                 out.println("<h1>Error: Seller not found.</h1>");
                 return;
             }
@@ -116,18 +112,17 @@ public class AddProduct extends HttpServlet {
             return;
         }
 
-        // If seller is approved, proceed with product insertion
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
             String query = "INSERT INTO Listing (product_name, image, location, price, quantity, description, category_id, seller_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, productName);
-            stmt.setString(2, imageFileName); // Save just the filename or the path if needed
+            stmt.setString(2, imageFileName);
             stmt.setString(3, location);
             stmt.setDouble(4, price);
             stmt.setInt(5, quantity);
             stmt.setString(6, description);
             stmt.setInt(7, category);
-            stmt.setInt(8, sellerId); // Add the seller_id
+            stmt.setInt(8, sellerId);
 
             int rowsAffected = stmt.executeUpdate();
 
@@ -136,7 +131,6 @@ public class AddProduct extends HttpServlet {
             } else {
                 out.println("<h1>Error adding product. Please try again.</h1>");
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
             out.println("<h1>Error: " + e.getMessage() + "</h1>");

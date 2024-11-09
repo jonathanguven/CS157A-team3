@@ -5,10 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class LoginDao {
-	private String dburl = "jdbc:mysql://localhost:3306/grocery_gander_db";
-	private String dbuname = "root";
-	private String dbpassword = "password";
-	private String dbdriver = "com.mysql.jdbc.Driver";
+    private String dburl = "jdbc:mysql://localhost:3306/grocery_gander_db";
+    private String dbuname = "root";
+    private String dbpassword = "password";
+    private String dbdriver = "com.mysql.jdbc.Driver";
 
     // Load the JDBC Driver
     public void loadDriver(String dbDriver) {
@@ -37,11 +37,6 @@ public class LoginDao {
         boolean status = false;
         String sql = "SELECT * FROM user WHERE username = ? AND password = ?";
         
-        System.out.println("Executing query: " + sql);
-        System.out.println("Username: " + username);
-        System.out.println("Password: " + password); // If passwords are hashed, print the hashed version
-
-        
         try {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, username);
@@ -53,5 +48,27 @@ public class LoginDao {
         }
 
         return status;
+    }
+
+    // Get seller_id for the given username
+    public Integer getSellerId(String username) {
+        loadDriver(dbdriver);
+        Connection con = getConnection();
+        Integer sellerId = null;
+        String sql = "SELECT s.seller_id FROM user u JOIN seller s ON u.user_id = s.user_id WHERE u.username = ?";
+        
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                sellerId = rs.getInt("seller_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return sellerId;
     }
 }

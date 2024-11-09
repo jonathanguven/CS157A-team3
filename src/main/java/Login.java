@@ -4,6 +4,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
@@ -18,12 +19,15 @@ public class Login extends HttpServlet {
         // Call the DAO to validate credentials
         LoginDao loginDao = new LoginDao();
         
-        System.out.println("Username: " + username);
-        System.out.println("Password: " + password);
-
-        
         if (loginDao.validate(username, password)) {
-            // If valid, create a session and set cookies
+            // If valid, get the seller_id and store it in session
+            Integer sellerId = loginDao.getSellerId(username); // Get seller_id from DB
+            if (sellerId != null) {
+                // Store the seller_id in the session
+                request.getSession().setAttribute("seller_id", sellerId);
+            }
+
+            // Create a login cookie
             Cookie loginCookie = new Cookie("username", username);
             loginCookie.setMaxAge(60 * 60 * 24); // Cookie will last 1 day
             response.addCookie(loginCookie);
