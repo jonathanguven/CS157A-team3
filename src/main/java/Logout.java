@@ -9,18 +9,26 @@ import java.io.IOException;
 
 @WebServlet("/logout")
 public class Logout extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Invalidate the session
-        request.getSession().invalidate();
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// Invalidate the session
+		request.getSession().invalidate();
 
-        // Remove the cookie by setting its max age to 0
-        Cookie loginCookie = new Cookie("username", null);
-        loginCookie.setMaxAge(0);
-        response.addCookie(loginCookie);
+		// Remove all cookies effectively
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				cookie.setValue(""); // Clear the value
+				cookie.setPath(request.getContextPath()); // Match the path correctly
+				cookie.setMaxAge(0); // Expire the cookie
+				response.addCookie(cookie);
+			}
+		}
 
-        // Redirect to login page
-        response.sendRedirect("login.jsp");
-    }
+		// Redirect to the login page
+		response.sendRedirect("login.jsp");
+	}
+
 }

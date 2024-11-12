@@ -81,4 +81,30 @@ public class LoginDao {
         }
         return -1;  // Return -1 or any other appropriate error code if validation fails
     }
+    
+    public Integer getSellerIdByUserId(int userId) {
+        Connection con = getConnection();
+        String sql = "SELECT idseller FROM seller WHERE user_id = ?";
+        
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("idseller");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return null;  // Return null if no seller is found
+    }
+
 }
