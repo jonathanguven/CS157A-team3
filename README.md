@@ -11,11 +11,9 @@ Clone this git repo
 
 ```bash
 git init
-git config core.sparseCheckout true
 ```
 then
 ```
-echo "src/" >> .git/info/sparse-checkout
 ```
 git clone(html method shown below)
 ```
