@@ -1,7 +1,8 @@
 # Ignore everything
 *
 
-# But not these files...
+# But not these directories and files...
 !.gitignore
 !src/
+!src/**/
 
