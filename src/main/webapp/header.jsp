@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +34,6 @@
             color: white;
             display: flex;
             align-items: center;
-            justify-content: flex-start; /* Ensure logo stays aligned to the left */
         }
 
         .logo svg {
@@ -45,7 +43,7 @@
         }
 
         .search-container {
-            flex-grow: 2; /* Increase the flex-grow to expand the search bar */
+            flex-grow: 2;
             margin: 0 1rem;
         }
 
@@ -88,7 +86,6 @@
             margin-left: 0.5rem;
             border-radius: 20px;
             transition: background-color 0.3s ease;
-            font-size: 1.1rem; /* Increase font size for links */
         }
 
         .nav-links a:hover {
@@ -125,7 +122,7 @@
     <header class="header">
         <nav class="nav">
             <div class="logo">
-                 <a href="home.jsp" style="text-decoration: none; color: white; display: flex; align-items: center;">
+                <a href="home.jsp" style="text-decoration: none; color: white; display: flex; align-items: center;">
                     Grocery Gander
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M2.5 5.5L5 3.8a2.9 2.9 0 0 1 2-.8h10c.8 0 1.5.3 2 .8l2.5 1.7"/>
@@ -137,18 +134,19 @@
                 </a>
             </div>
             <div class="search-container">
-                <form action="search" method="get">
+                <form action="search.jsp" method="get">
                     <input type="text" placeholder="Search for groceries..." name="query" aria-label="Search for groceries">
                     <button type="submit" aria-label="Submit search">Search</button>
                 </form>
             </div>
             <div class="nav-links">
                 <a href="login.jsp">Login</a>
-				<a href="logout">Logout</a>
+                <a href="logout">Logout</a>
                 <a href="Profile">Profile</a>
             </div>
         </nav>
     </header>
 </body>
 </html>
-	
+
+

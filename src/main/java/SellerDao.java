@@ -5,10 +5,14 @@ import java.util.List;
 import com.grocerygander.model.Seller;
 
 public class SellerDao {
-    private String dburl = "jdbc:mysql://localhost:3306/userdb";
-    private String dbuname = "root";
-    private String dbpassword = "mysql";
-    private String dbdriver = "com.mysql.jdbc.Driver";
+	private String dburl = "jdbc:mysql://localhost:3306/userdb";
+	private String dbuname = "root";
+	private String dbpassword = "mysql";
+	private String dbdriver = "com.mysql.jdbc.Driver";
+	
+	
+	   
+	   
 
     public SellerDao() {
         loadDriver(dbdriver);

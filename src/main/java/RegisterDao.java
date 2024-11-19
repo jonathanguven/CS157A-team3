@@ -6,10 +6,14 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 
 public class RegisterDao {
-    private String dburl = "jdbc:mysql://localhost:3306/userdb";
-    private String dbuname = "root";
-    private String dbpassword = "mysql";
-    private String dbdriver = "com.mysql.cj.jdbc.Driver";
+	private String dburl = "jdbc:mysql://localhost:3306/userdb";
+	private String dbuname = "root";
+	private String dbpassword = "mysql";
+	private String dbdriver = "com.mysql.jdbc.Driver";
+	
+	
+	   
+	   
 
     public void loadDriver(String dbDriver) {
         try {

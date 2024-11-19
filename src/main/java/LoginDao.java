@@ -9,6 +9,10 @@ public class LoginDao {
 	private String dbuname = "root";
 	private String dbpassword = "mysql";
 	private String dbdriver = "com.mysql.jdbc.Driver";
+	
+	
+	   
+	   
 
     // Load the JDBC Driver
     public void loadDriver(String dbDriver) {
