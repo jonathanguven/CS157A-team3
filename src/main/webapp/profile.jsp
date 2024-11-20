@@ -39,8 +39,9 @@ body {
 
 .button-container {
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: space-around;
-	margin-top: 1rem; /* Space above the buttons */
+	margin-top: 1rem;
 }
 
 .icon-button {
@@ -57,6 +58,7 @@ body {
 	font-weight: bold;
 	cursor: pointer;
 	transition: background-color 0.3s ease;
+	margin: 0.5rem;
 }
 
 .icon-button:hover {
@@ -73,7 +75,7 @@ body {
 
 .button-text {
 	font-size: 1rem;
-	margin-top: 5px; /* Small space between the icon and text */
+	margin-top: 5px;
 }
 </style>
 </head>
@@ -88,9 +90,9 @@ body {
 				if (cookies != null) {
 					for (Cookie cookie : cookies) {
 						if (cookie.getName().equals("username")) {
-					username = cookie.getValue();
+							username = cookie.getValue();
 						} else if (cookie.getName().equals("idseller")) {
-					sellerId = cookie.getValue();
+							sellerId = cookie.getValue();
 						}
 					}
 				}
@@ -118,16 +120,19 @@ body {
 				<!-- Request Selling Permission Icon with Text Inside the Button -->
 				<button class="icon-button" onclick="requestPermission()">
 					<div class="permission-icon">&#9881;</div>
-					<!-- Wrench icon for permissions -->
 					<div class="button-text">Request Selling Permission</div>
 				</button>
 
 				<!-- New Seller's Request Icon -->
-				<button class="icon-button"
-					onclick="location.href='sellersRequest.jsp'">
+				<button class="icon-button" onclick="location.href='sellersRequest.jsp'">
 					<div class="permission-icon">&#128221;</div>
-					<!-- Document icon for Seller's Request -->
 					<div class="button-text">Seller's Request</div>
+				</button>
+
+				<!-- Manage Listings Icon -->
+				<button class="icon-button" onclick="location.href='manageListings.jsp'">
+				    <div class="permission-icon">&#128203;</div> <!-- Clipboard Icon -->
+				    <div class="button-text">Manage Listings</div>
 				</button>
 
 				<script>
