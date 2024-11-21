@@ -148,10 +148,12 @@
                 %>
             </td>
             <td class="actions">
-                <form action="EditListing" method="post" style="display:inline;">
-                    <input type="hidden" name="listing_id" value="<%= listingId %>">
-                    <button type="submit">Edit</button>
-                </form>
+                <form action="editListing.jsp" method="get" style="display:inline;">
+    <input type="hidden" name="listing_id" value="<%= listingId %>">
+    <button type="submit">Edit</button>
+</form>
+
+
                 <form action="DeleteListing" method="post" style="display:inline;">
                     <input type="hidden" name="listing_id" value="<%= listingId %>">
                     <button type="submit" onclick="return confirm('Are you sure you want to delete this listing?')">Delete</button>
