@@ -175,7 +175,7 @@
                     }
                 }
             } else {
-                out.println("<tr><td colspan='8'>Please log in to view your listings.</td></tr>");
+                out.println("<tr><td colspan='8'>You have no existing listings.</td></tr>");
             }
         %>       
     </table>
