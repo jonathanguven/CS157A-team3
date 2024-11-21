@@ -132,7 +132,7 @@
             <td><%= productName %></td>
             <td><%= price %></td>
             <td><%= quantity %></td>
-            <td><%= location != null ? location : "N/A" %></td>
+            <td><%= location != null ? location : "No location" %></td>
             <td><%= description != null ? description : "No description" %></td>
             <td>
                 <%
@@ -142,7 +142,7 @@
                 <%
                     } else {
                 %>
-                No Image
+                No image
                 <%
                     }
                 %>
