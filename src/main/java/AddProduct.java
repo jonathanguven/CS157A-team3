@@ -120,7 +120,8 @@ public class AddProduct extends HttpServlet {
                         int descRowsAffected = descriptionStmt.executeUpdate();
 
                         if (descRowsAffected > 0) {
-                            out.println("<h1>Product Added Successfully</h1>");
+                            // Redirect to profile.jsp after successfully adding the product
+                            response.sendRedirect("profile.jsp");
                         } else {
                             out.println("<h1>Error adding product description. Please try again.</h1>");
                         }
