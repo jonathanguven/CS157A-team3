@@ -48,9 +48,6 @@ public class Login extends HttpServlet {
                 sellerIdCookie.setMaxAge(60 * 60 * 24);
                 response.addCookie(sellerIdCookie);
             }
-
-            // Store the role in the session
-            request.getSession().setAttribute("role", role[0]);
             
         } else {
             response.sendRedirect("login.jsp?error=1");
