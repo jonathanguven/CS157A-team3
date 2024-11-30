@@ -5,14 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class LoginDao {
-	private String dburl = "jdbc:mysql://localhost:3306/userdb";
-	private String dbuname = "root";
-	private String dbpassword = "mysql";
-	private String dbdriver = "com.mysql.jdbc.Driver";
-	
-	
-	   
-	   
+    private String dburl = "jdbc:mysql://localhost:3306/userdb";
+    private String dbuname = "root";
+    private String dbpassword = "mysql";
+    private String dbdriver = "com.mysql.jdbc.Driver";
 
     // Load the JDBC Driver
     public void loadDriver(String dbDriver) {
@@ -34,35 +30,11 @@ public class LoginDao {
         return con;
     }
 
-    // Validate the username and password
-    public boolean validate(String username, String password) {
+    // Validate the username and password and return the user_id and role
+    public int validateAndGetUserId(String username, String password, String[] role) {
         loadDriver(dbdriver);
         Connection con = getConnection();
-        boolean status = false;
-        String sql = "SELECT * FROM user WHERE username = ? AND password = ?";
-        
-        System.out.println("Executing query: " + sql);
-        System.out.println("Username: " + username);
-        System.out.println("Password: " + password); // If passwords are hashed, print the hashed version
-
-        
-        try {
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, username);
-            ps.setString(2, password);
-            ResultSet rs = ps.executeQuery();
-            status = rs.next(); // Returns true if a match is found
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return status;
-    }
-    
-    public int validateAndGetUserId(String username, String password) {
-        loadDriver(dbdriver);
-        Connection con = getConnection();
-        String sql = "SELECT user_id FROM user WHERE username = ? AND password = ?"; // Ensure your table and column names match
+        String sql = "SELECT user_id, role FROM user WHERE username = ? AND password = ?";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, username);
@@ -70,6 +42,7 @@ public class LoginDao {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
+                role[0] = rs.getString("role");  // Set the role to the passed variable (as array)
                 return rs.getInt("user_id");  // Successfully validated and return the user_id
             }
         } catch (SQLException e) {
@@ -83,13 +56,14 @@ public class LoginDao {
                 e.printStackTrace();
             }
         }
-        return -1;  // Return -1 or any other appropriate error code if validation fails
+        return -1;  // Return -1 if validation fails
     }
-    
+
+    // Get seller id by user id
     public Integer getSellerIdByUserId(int userId) {
         Connection con = getConnection();
         String sql = "SELECT idseller FROM seller WHERE user_id = ?";
-        
+
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
@@ -110,5 +84,4 @@ public class LoginDao {
         }
         return null;  // Return null if no seller is found
     }
-
 }
