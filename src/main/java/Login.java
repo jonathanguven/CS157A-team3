@@ -30,7 +30,7 @@ public class Login extends HttpServlet {
 
         LoginDao loginDao = new LoginDao();
         String[] role = new String[1];  // Array to hold role because it’s passed by reference
-        int userId = loginDao.validateAndGetUserId(username, password);
+        int userId = loginDao.validateAndGetUserId(username, password, role);
 
         if (userId != -1) {
             // Create cookies for username and user_id
