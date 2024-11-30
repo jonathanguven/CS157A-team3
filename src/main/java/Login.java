@@ -29,8 +29,7 @@ public class Login extends HttpServlet {
         String password = request.getParameter("password");
 
         LoginDao loginDao = new LoginDao();
-        String[] role = new String[1];  // Array to hold role because it’s passed by reference
-        int userId = loginDao.validateAndGetUserId(username, password, role);
+        int userId = loginDao.validateAndGetUserId(username, password);
 
         if (userId != -1) {
             // Create cookies for username and user_id
@@ -53,7 +52,6 @@ public class Login extends HttpServlet {
             // Store the role in the session
             request.getSession().setAttribute("role", role[0]);
             
-            response.sendRedirect("profile.jsp");
         } else {
             response.sendRedirect("login.jsp?error=1");
         }
