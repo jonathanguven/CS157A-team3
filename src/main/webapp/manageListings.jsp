@@ -81,7 +81,11 @@
         </tr>
 
         <%
+            // Get user role and sellerId from session
+            String role = (String) session.getAttribute("role");
             String sellerId = (String) session.getAttribute("idseller");
+
+            // If no sellerId in session, try to fetch from cookies
             if (sellerId == null) {
                 Cookie[] cookies = request.getCookies();
                 if (cookies != null) {
@@ -95,34 +99,56 @@
                 }
             }
 
-            if (sellerId != null) {
-                // Database logic to retrieve listings including the image
-                Connection conn = null;
-                PreparedStatement ps = null;
-                ResultSet rs = null;
-                
-                try {
-                    conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdb", "root", "mysql");
-                    String query = "SELECT l.listing_id, l.product_name, l.price, d.quantity, d.location, d.description, d.image " +
-                                   "FROM listing l " +
-                                   "JOIN description d ON l.listing_id = d.listing_id " +
-                                   "WHERE l.idseller = ?";
-                    ps = conn.prepareStatement(query);
-                    ps.setInt(1, Integer.parseInt(sellerId));
-                    rs = ps.executeQuery();
+            // Database connection setup
+            Connection conn = null;
+            PreparedStatement ps = null;
+            ResultSet rs = null;
 
-                    while (rs.next()) {
+            try {
+                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdb", "root", "mysql");
+
+                String query;
+                if ("admin".equals(role)) {
+                    // Admin sees all listings
+                    query = "SELECT l.listing_id, l.product_name, l.price, d.quantity, d.location, d.description, d.image " +
+                            "FROM listing l " +
+                            "JOIN description d ON l.listing_id = d.listing_id";
+                } else if (sellerId != null) {
+                    // Seller only sees their own listings
+                    query = "SELECT l.listing_id, l.product_name, l.price, d.quantity, d.location, d.description, d.image " +
+                            "FROM listing l " +
+                            "JOIN description d ON l.listing_id = d.listing_id " +
+                            "WHERE l.idseller = ?";
+                } else {
+                    // No sellerId, show no listings
+                    out.println("<tr><td colspan='8'>No listings available.</td></tr>");
+                    return;
+                }
+
+                ps = conn.prepareStatement(query);
+
+                if (!"admin".equals(role)) {
+                    ps.setInt(1, Integer.parseInt(sellerId));  // Only for sellers
+                }
+
+                rs = ps.executeQuery();
+
+                if (!rs.next()) {
+                    out.println("<tr><td colspan='8'>No listings found.</td></tr>");
+                } else {
+                    // Loop through the results and display them
+                    do {
                         int listingId = rs.getInt("listing_id");
                         String productName = rs.getString("product_name");
                         double price = rs.getDouble("price");
                         int quantity = rs.getInt("quantity");
                         String location = rs.getString("location");
                         String description = rs.getString("description");
-                        byte[] imageBytes = rs.getBytes("image"); // Fetch image as bytes
+                        byte[] imageBytes = rs.getBytes("image");
 
                         String imageBase64 = null;
                         if (imageBytes != null) {
-                            // Convert the image bytes to base64 for embedding in HTML
+                            // Convert image bytes to base64 for embedding in HTML
                             imageBase64 = Base64.getEncoder().encodeToString(imageBytes);
                         }
         %>
@@ -149,10 +175,9 @@
             </td>
             <td class="actions">
                 <form action="editListing.jsp" method="get" style="display:inline;">
-    <input type="hidden" name="listing_id" value="<%= listingId %>">
-    <button type="submit">Edit</button>
-</form>
-
+                    <input type="hidden" name="listing_id" value="<%= listingId %>">
+                    <button type="submit">Edit</button>
+                </form>
 
                 <form action="DeleteListing" method="post" style="display:inline;">
                     <input type="hidden" name="listing_id" value="<%= listingId %>">
@@ -161,23 +186,21 @@
             </td>
         </tr>
 
-        <%
-                    }
-                } catch (SQLException e) {
-                    out.println("<tr><td colspan='8'>Error fetching listings: " + e.getMessage() + "</td></tr>");
-                } finally {
-                    try {
-                        if (rs != null) rs.close();
-                        if (ps != null) ps.close();
-                        if (conn != null) conn.close();
-                    } catch (SQLException e) {
-                        out.println("<tr><td colspan='8'>Error closing database resources: " + e.getMessage() + "</td></tr>");
-                    }
+        <% 
+                    } while (rs.next());
                 }
-            } else {
-                out.println("<tr><td colspan='8'>You have no existing listings.</td></tr>");
+            } catch (SQLException e) {
+                out.println("<tr><td colspan='8'>Error fetching listings: " + e.getMessage() + "</td></tr>");
+            } finally {
+                try {
+                    if (rs != null) rs.close();
+                    if (ps != null) ps.close();
+                    if (conn != null) conn.close();
+                } catch (SQLException e) {
+                    out.println("<tr><td colspan='8'>Error closing database resources: " + e.getMessage() + "</td></tr>");
+                }
             }
-        %>       
+        %>
     </table>
 </body>
 </html>
