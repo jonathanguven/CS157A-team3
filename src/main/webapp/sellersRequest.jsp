@@ -3,6 +3,26 @@
 <%@ page import="com.grocerygander.model.Seller" %>
 <%@ include file="header.jsp" %>
 
+<%-- Check if the user is not an admin --%>
+<% 
+    String role = (String) session.getAttribute("role");
+    if (role == null || !role.equals("admin")) {
+%>
+
+<script type="text/javascript">
+    // Show an alert popup with the message
+    alert("You must be an admin to view this page.");
+
+    // Redirect the user to home.jsp after the alert
+    window.location.href = "home.jsp";
+</script>
+
+<% 
+        // End the page execution after the redirect script
+        return;  
+    }
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,7 +43,9 @@
     </style>
 </head>
 <body>
+
     <h2>Seller List</h2>
+
     <!-- Form to update seller status -->
     <form action="sellers" method="post">
         <table>
@@ -60,5 +82,6 @@
         </table>
         <input type="submit" value="Update Seller Status">
     </form>
+
 </body>
 </html>

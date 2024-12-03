@@ -29,7 +29,8 @@ public class Login extends HttpServlet {
         String password = request.getParameter("password");
 
         LoginDao loginDao = new LoginDao();
-        int userId = loginDao.validateAndGetUserId(username, password);
+        String[] role = new String[1];  // Array to hold role because it’s passed by reference
+        int userId = loginDao.validateAndGetUserId(username, password, role);
 
         if (userId != -1) {
             // Create cookies for username and user_id
@@ -48,6 +49,9 @@ public class Login extends HttpServlet {
                 sellerIdCookie.setMaxAge(60 * 60 * 24);
                 response.addCookie(sellerIdCookie);
             }
+
+            // Store the role in the session
+            request.getSession().setAttribute("role", role[0]);
 
             response.sendRedirect("profile.jsp");
         } else {
