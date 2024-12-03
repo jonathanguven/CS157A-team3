@@ -134,6 +134,13 @@ body {
 				    <div class="permission-icon">&#128203;</div> <!-- Clipboard Icon -->
 				    <div class="button-text">Manage Listings</div>
 				</button>
+				
+				<!-- Admin Report Dashboard Icon -->
+				<button class="icon-button" onclick="location.href='adminReportDashboard.jsp'">
+				    <div class="permission-icon">&#128221;</div> <!-- Report Icon -->
+				    <div class="button-text">Manage Reports</div>
+				</button>
+				
 
 				<script>
 					function requestPermission() {

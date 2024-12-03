@@ -165,9 +165,10 @@
         <div class="product-grid" id="productGrid">
             <%
                 // Database connection parameters
-                String DB_URL = "jdbc:mysql://localhost:3306/userdb";
+                String DB_URL = "jdbc:mysql://localhost:3306/GroceryGander";
                 String DB_USER = "root";
-                String DB_PASSWORD = "mysql";
+                String DB_PASSWORD = "password";
+   
 
                 // Get the search query from the request parameter
                 String searchQuery = request.getParameter("query");

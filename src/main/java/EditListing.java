@@ -10,9 +10,9 @@ import java.sql.*;
 public class EditListing extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/userdb";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/GroceryGander";
     private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "mysql";
+    private static final String DB_PASSWORD = "password";
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");

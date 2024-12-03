@@ -4,9 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class sellRequestDao {
-	private String dburl = "jdbc:mysql://localhost:3306/userdb";
+	private String dburl = "jdbc:mysql://localhost:3306/GroceryGander";
 	private String dbuname = "root";
-	private String dbpassword = "mysql";
+	private String dbpassword = "password";
 	private String dbdriver = "com.mysql.jdbc.Driver";
 	
 	

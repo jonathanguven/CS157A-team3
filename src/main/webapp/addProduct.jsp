@@ -112,7 +112,7 @@
                 <%
                     // Query categories and populate the options
                     try {
-                        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdb", "root", "mysql");
+                        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/GroceryGander", "root", "password");
                         PreparedStatement ps = conn.prepareStatement("SELECT category_id, category_name FROM Category");
                         ResultSet rs = ps.executeQuery();
                         while (rs.next()) {

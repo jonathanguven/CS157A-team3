@@ -18,7 +18,7 @@ public class DeleteListing extends HttpServlet {
 
             try {
                 // Set up the database connection
-                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdb", "root", "mysql");
+                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/GroceryGander", "root", "password");
                 
                 // Begin a transaction
                 conn.setAutoCommit(false);
