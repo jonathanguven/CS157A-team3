@@ -182,9 +182,9 @@
     <div class="container fade-in">
         <%
             // Database connection parameters
-            String DB_URL = "jdbc:mysql://localhost:3306/userdb";
+            String DB_URL = "jdbc:mysql://localhost:3306/GroceryGander";
             String DB_USER = "root";
-            String DB_PASSWORD = "mysql";
+            String DB_PASSWORD = "password";
 
             // Get the listing_id from the request parameter
             String listingIdParam = request.getParameter("listing_id");

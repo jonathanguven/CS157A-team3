@@ -105,8 +105,7 @@
             ResultSet rs = null;
 
             try {
-                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdb", "root", "mysql");
-
+                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/GroceryGander", "root", "password");
                 String query;
                 if ("admin".equals(role)) {
                     // Admin sees all listings

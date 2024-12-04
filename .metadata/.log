@@ -1,0 +1,26 @@
+!SESSION 2024-10-15 17:29:52.283 -----------------------------------------------
+eclipse.buildId=4.33.0.20240905-0613
+java.version=22.0.2
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=macosx, ARCH=aarch64, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product -keyring /Users/jonathannguyen/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch aarch64 -product org.eclipse.epp.package.jee.product -keyring /Users/jonathannguyen/.eclipse_keyring -data /Users/jonathannguyen/eclipse-workspace/CS157A-team3
+
+!ENTRY ch.qos.logback.classic 1 0 2024-10-15 17:29:54.089
+!MESSAGE Activated before the state location was initialized. Retry after the state location is initialized.
+
+!ENTRY ch.qos.logback.classic 1 0 2024-10-15 17:29:54.938
+!MESSAGE Logback config file: /Users/jonathannguyen/eclipse-workspace/CS157A-team3/.metadata/.plugins/org.eclipse.m2e.logback/logback.2.6.1.20240411-1122.xml
+!SESSION 2024-10-15 17:30:15.602 -----------------------------------------------
+eclipse.buildId=4.33.0.20240905-0613
+java.version=22.0.2
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=macosx, ARCH=aarch64, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product -keyring /Users/jonathannguyen/.eclipse_keyring
+Command-line arguments:  -os macosx -ws cocoa -arch aarch64 -product org.eclipse.epp.package.jee.product -keyring /Users/jonathannguyen/.eclipse_keyring
+
+!ENTRY ch.qos.logback.classic 1 0 2024-10-15 17:30:16.674
+!MESSAGE Activated before the state location was initialized. Retry after the state location is initialized.
+
+!ENTRY ch.qos.logback.classic 1 0 2024-10-15 17:30:17.484
+!MESSAGE Logback config file: /Users/jonathannguyen/eclipse-workspace/CS157A-team3/.metadata/.plugins/org.eclipse.m2e.logback/logback.2.6.1.20240411-1122.xml

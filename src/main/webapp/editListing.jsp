@@ -74,7 +74,7 @@
     ResultSet rs = null;
 
     try {
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdb", "root", "mysql");
+        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/GroceryGander", "root", "password");
         String query = "SELECT l.listing_id, l.product_name, l.price, d.quantity, d.location, d.description, d.image, l.category_id " +
                        "FROM listing l " +
                        "JOIN description d ON l.listing_id = d.listing_id " +
