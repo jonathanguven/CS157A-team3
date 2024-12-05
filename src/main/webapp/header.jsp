@@ -118,6 +118,25 @@
         }
     </style>
 </head>
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+    // Check if the user is logged in
+    String user = (String) session.getAttribute("username");
+    if (user == null) {
+        // If not in session, check cookies
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("username".equals(cookie.getName())) {
+                    user = cookie.getValue();
+                    break;
+                }
+            }
+        }
+    }
+%>
+
 <body>
     <header class="header">
         <nav class="nav">
@@ -140,9 +159,20 @@
                 </form>
             </div>
             <div class="nav-links">
-                <a href="login.jsp">Login</a>
-                <a href="logout">Logout</a>
-                <a href="Profile">Profile</a>
+                <%
+	                if (user == null) {
+	            %>
+	                <!-- Show login button if user is not logged in -->
+	                <a href="login.jsp">Login</a>
+	            <%
+	                } else {
+	            %>
+	                <!-- Show profile and logout buttons if user is logged in -->
+	                <a href="Profile">Profile</a>
+	                <a href="logout">Logout</a>
+	            <%
+	                }
+	            %>
             </div>
         </nav>
     </header>
