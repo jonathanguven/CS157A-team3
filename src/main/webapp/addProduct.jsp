@@ -197,7 +197,7 @@
                 <textarea id="description" name="description"></textarea>
             </div>
 
-            <button type="button" id="generateDescription" onclick="generateDescription()">Generate me a description</button>
+            <<!-- <button type="button" id="generateDescription" onclick="generateDescription()">Generate me a description</button>  -->
 
             <div class="form-group">
                 <label for="category" class="required">Category:</label>
@@ -230,6 +230,8 @@
     <div class="collaboration-indicator" title="Real-time collaboration active"></div>
 
     <script>
+    
+    	/*
         function generateDescription() {
             const form = document.getElementById('productForm');
             const formData = new FormData(form);
@@ -262,7 +264,7 @@
                 }]
             };
             
-            const apiKey = "AIzaSyAaprpvB0GbKrRXK_OvM3XbpWBF_iozjOw";
+            const apiKey = "AIzaSyAaprpvB0GbKrRXK_OvM3XbpWBF_iozjOw"; // doesnt work anymore API cancelled, need new one
             fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
                 method: 'POST',
                 headers: {
@@ -278,7 +280,7 @@
             .catch(error => {
                 console.error('Error:', error);
             });
-        }
+        } */
 
         // Smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
