@@ -20,7 +20,6 @@ public class ReportDao {
         }
     }
 
-
     // Get all unresolved reports for the admin dashboard
     public ResultSet getReports() {
         String sql = "SELECT r.report_id, r.listing_id, l.product_name, r.report_reason, r.status " +

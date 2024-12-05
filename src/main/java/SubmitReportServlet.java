@@ -23,11 +23,19 @@ public class SubmitReportServlet extends HttpServlet {
         String listingIdParam = request.getParameter("listing_id");
 
         if (listingIdParam == null || reportReason == null || reportReason.trim().isEmpty()) {
-            response.getWriter().println("Invalid input. Please provide a valid listing ID and report reason.");
+            // Redirect back with error parameter
+            response.sendRedirect("productDetails.jsp?listing_id=" + listingIdParam + "&error=invalid_input");
             return;
         }
 
-        int listingId = Integer.parseInt(listingIdParam);
+        int listingId;
+        try {
+            listingId = Integer.parseInt(listingIdParam);
+        } catch (NumberFormatException e) {
+            // Redirect back with error parameter
+            response.sendRedirect("productDetails.jsp?listing_id=" + listingIdParam + "&error=invalid_listing_id");
+            return;
+        }
 
         String sql = "INSERT INTO Report (listing_id, report_reason, status) VALUES (?, ?, 'Pending')";
 
@@ -39,13 +47,16 @@ public class SubmitReportServlet extends HttpServlet {
 
             int rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {
-                response.getWriter().println("Report submitted successfully.");
+                // Redirect back with success parameter
+                response.sendRedirect("productDetails.jsp?listing_id=" + listingId + "&success=report_submitted");
             } else {
-                response.getWriter().println("Failed to submit the report.");
+                // Redirect back with error parameter
+                response.sendRedirect("productDetails.jsp?listing_id=" + listingId + "&error=report_failed");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            response.getWriter().println("Error: " + e.getMessage());
+            // Redirect back with error parameter
+            response.sendRedirect("productDetails.jsp?listing_id=" + listingId + "&error=sql_error");
         }
     }
 }
