@@ -66,7 +66,7 @@
             <tr>
                 <td><%= seller.getIdseller() %></td>
                 <td><%= seller.getUserId() %></td>
-                <td><%= seller.getUserId() + "@sjsu.edu" %></td>
+                <td><%= seller.getEmail()%></td>
                 <td><%= status %></td>
                 <td><input type="radio" name="status_<%= seller.getIdseller() %>" value="denied" <%= "pending".equals(status) ? "checked" : "" %>></td>
                 <td><input type="radio" name="status_<%= seller.getIdseller() %>" value="approved" <%= "approved".equals(status) ? "checked" : "" %>></td>

@@ -67,7 +67,7 @@
 
     <h1>Add New Product</h1>
 
-    <form action="addProduct" method="post" enctype="multipart/form-data">
+    <form action="addProduct" method="post" enctype="multipart/form-data" id="productForm">
         <!-- Product Name -->
         <div class="form-group">
             <label for="productName" class="required">Product Name:</label>
@@ -103,6 +103,20 @@
             <label for="description">Description:</label>
             <textarea id="description" name="description"></textarea>
         </div>
+        	
+        <!-- Button to trigger description generation -->
+        <button type="button" onclick="generateDescription()">Generate me a description</button>
+        
+        <!--  API key for gemini
+        AIzaSyAaprpvB0GbKrRXK_OvM3XbpWBF_iozjOw
+        curl "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$GOOGLE_API_KEY" \
+    -H 'Content-Type: application/json' \
+    -X POST \
+    -d '{
+      "contents": [{
+        "parts":[{"text": "Write a story about a magic backpack."}]
+        }]
+       }' 2> /dev/null -->
 
         <!-- Category -->
         <div class="form-group">
@@ -136,3 +150,57 @@
 
 </body>
 </html>
+
+<script>
+
+    function generateDescription() {
+        const form = document.getElementById('productForm');
+        const formData = new FormData(form);
+        const imageFile = formData.get('image');
+
+        if (imageFile && imageFile.size > 0) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const imgBase64 = event.target.result.split(',')[1]; // Ensure we only get Base64 data, exclude the MIME prefix
+                sendToGeminiAPI(imgBase64, imageFile.type);
+            };
+            reader.readAsDataURL(imageFile);
+        } else {
+            sendToGeminiAPI();
+        }
+    }
+
+    function sendToGeminiAPI(imgBase64 = '', mimeType = 'image/jpeg') {
+    	
+        const payload = {
+            contents: [{
+                parts: [
+                    {"text": "Provide a description for this product."},
+                    imgBase64 ? {
+                        "inline_data": {
+                            "mime_type": mimeType,
+                            "data": imgBase64
+                        }
+                    } : {}
+                ]
+            }]
+        };
+        
+        const apiKey = "AIzaSyAaprpvB0GbKrRXK_OvM3XbpWBF_iozjOw";
+        fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);  // Handle the response data
+            document.getElementById('description').value = data.generated_text;  // Assuming the API returns a field `generated_text`
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>

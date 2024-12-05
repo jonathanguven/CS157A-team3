@@ -41,7 +41,7 @@ public class SellerDao {
     // Fetch all sellers
     public List<Seller> listAllSellers() {
         List<Seller> listSeller = new ArrayList<>();
-        String sql = "SELECT * FROM seller";
+        String sql = "SELECT seller.*, user.email FROM seller JOIN user ON seller.user_id = user.user_id";
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -49,8 +49,9 @@ public class SellerDao {
             while (rs.next()) {
                 int id = rs.getInt("idseller");
                 int userId = rs.getInt("user_id");  // Make sure your data types align with the database schema
+                String email = rs.getString("email");
                 String isApproved = rs.getString("is_approved");
-                Seller seller = new Seller(id, userId, isApproved);
+                Seller seller = new Seller(id, userId, email, isApproved);
                 listSeller.add(seller);
             }
         } catch (SQLException e) {
