@@ -1,16 +1,16 @@
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/AdminReportDashboard")
-public class AdminReportDashboard extends HttpServlet {
+@WebServlet("/UpdateReportServlet")
+public class UpdateReportServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private static final String DB_URL = "jdbc:mysql://localhost:3306/GroceryGander";
@@ -19,15 +19,8 @@ public class AdminReportDashboard extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String reportIdParam = request.getParameter("report_id");
+        int reportId = Integer.parseInt(request.getParameter("report_id"));
         String status = request.getParameter("status");
-
-        if (reportIdParam == null || status == null) {
-            response.getWriter().println("Invalid input. Please provide a valid report ID and status.");
-            return;
-        }
-
-        int reportId = Integer.parseInt(reportIdParam);
 
         String sql = "UPDATE Report SET status = ? WHERE report_id = ?";
 
@@ -36,13 +29,9 @@ public class AdminReportDashboard extends HttpServlet {
 
             stmt.setString(1, status);
             stmt.setInt(2, reportId);
-            int rowsUpdated = stmt.executeUpdate();
+            stmt.executeUpdate();
 
-            if (rowsUpdated > 0) {
-                response.sendRedirect("adminReportDashboard.jsp");
-            } else {
-                response.getWriter().println("Failed to update the report status.");
-            }
+            response.sendRedirect("adminReportDashboard.jsp");
         } catch (SQLException e) {
             e.printStackTrace();
             response.getWriter().println("Error: " + e.getMessage());

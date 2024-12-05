@@ -9,8 +9,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-@WebServlet("/AdminReportDashboard")
-public class AdminReportDashboard extends HttpServlet {
+@WebServlet("/SubmitReportServlet")
+public class SubmitReportServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private static final String DB_URL = "jdbc:mysql://localhost:3306/GroceryGander";
@@ -19,29 +19,29 @@ public class AdminReportDashboard extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String reportIdParam = request.getParameter("report_id");
-        String status = request.getParameter("status");
+        String reportReason = request.getParameter("report_reason");
+        String listingIdParam = request.getParameter("listing_id");
 
-        if (reportIdParam == null || status == null) {
-            response.getWriter().println("Invalid input. Please provide a valid report ID and status.");
+        if (listingIdParam == null || reportReason == null || reportReason.trim().isEmpty()) {
+            response.getWriter().println("Invalid input. Please provide a valid listing ID and report reason.");
             return;
         }
 
-        int reportId = Integer.parseInt(reportIdParam);
+        int listingId = Integer.parseInt(listingIdParam);
 
-        String sql = "UPDATE Report SET status = ? WHERE report_id = ?";
+        String sql = "INSERT INTO Report (listing_id, report_reason, status) VALUES (?, ?, 'Pending')";
 
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, status);
-            stmt.setInt(2, reportId);
-            int rowsUpdated = stmt.executeUpdate();
+            stmt.setInt(1, listingId);
+            stmt.setString(2, reportReason);
 
-            if (rowsUpdated > 0) {
-                response.sendRedirect("adminReportDashboard.jsp");
+            int rowsInserted = stmt.executeUpdate();
+            if (rowsInserted > 0) {
+                response.getWriter().println("Report submitted successfully.");
             } else {
-                response.getWriter().println("Failed to update the report status.");
+                response.getWriter().println("Failed to submit the report.");
             }
         } catch (SQLException e) {
             e.printStackTrace();

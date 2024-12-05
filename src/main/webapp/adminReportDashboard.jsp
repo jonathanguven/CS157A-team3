@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="header.jsp" %>
 
+<%@ page import="java.sql.*" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,35 +30,30 @@
 
         .container {
             max-width: 1200px;
-            margin: 0 auto;
+            margin: 50px auto;
             padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         h2 {
             text-align: center;
-            margin: 40px 0;
             color: var(--primary-color);
             font-weight: 500;
-        }
-
-        .table-container {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
         }
 
         table {
             width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
+            border-collapse: collapse;
+            margin-bottom: 20px;
         }
 
         th, td {
-            padding: 16px;
-            text-align: left;
+            padding: 12px 16px;
             border-bottom: 1px solid var(--border-color);
+            text-align: left;
         }
 
         th {
@@ -65,160 +61,108 @@
             font-weight: 500;
             text-transform: uppercase;
             font-size: 0.9em;
-            letter-spacing: 0.5px;
+            color: var(--text-color);
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
         }
 
         tr:last-child td {
             border-bottom: none;
         }
 
-        tr:hover {
-            background-color: #f5f5f5;
-            transition: background-color 0.3s ease;
-        }
-
         .actions {
             display: flex;
-            justify-content: center;
+            gap: 10px;
+        }
+
+        button, select {
+            font-size: 14px;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
         }
 
         button {
             background-color: var(--primary-color);
             color: white;
-            padding: 8px 16px;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
             transition: background-color 0.3s ease, transform 0.1s ease;
-            font-weight: 500;
         }
 
         button:hover {
             background-color: var(--secondary-color);
-            transform: translateY(-1px);
         }
 
-        button:active {
-            transform: translateY(0);
+        select {
+            border: 1px solid var(--border-color);
+            background-color: white;
+            color: var(--text-color);
         }
 
         .error-message {
-            background-color: #ffebee;
-            color: #c62828;
-            padding: 16px;
-            border-radius: 4px;
-            margin-bottom: 20px;
             text-align: center;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-
-            th, td {
-                padding: 12px;
-            }
-
-            .actions {
-                flex-direction: column;
-            }
-
-            button {
-                margin-top: 8px;
-            }
+            color: red;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Report Management Dashboard</h2>
-        
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Report ID</th>
-                        <th>Listing ID</th>
-                        <th>Product Name</th>
-                        <th>Report Reason</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
+        <table>
+            <thead>
+                <tr>
+                    <th>Report ID</th>
+                    <th>Listing ID</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
                 <%
-                    // Get the user role from the session to ensure only admin can view
-                    String role = (String) session.getAttribute("role");
+                    String sql = "SELECT report_id, listing_id, report_reason, status FROM Report WHERE status != 'Resolved'";
+                    try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/GroceryGander", "root", "password");
+                         PreparedStatement ps = conn.prepareStatement(sql);
+                         ResultSet rs = ps.executeQuery()) {
 
-                    // Check if the user is an admin
-                    if (!"admin".equalsIgnoreCase(role)) {
-                        out.println("<tr><td colspan='6'><div class='error-message'>Unauthorized access. Admins only.</div></td></tr>");
-                        return;
-                    }
-
-                    // Database connection setup
-                    Connection conn = null;
-                    PreparedStatement ps = null;
-                    ResultSet rs = null;
-
-                    try {
-                        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/GroceryGander", "root", "password");
-
-                        // Query to fetch unresolved reports
-                        String query = "SELECT r.report_id, r.listing_id, l.product_name, r.report_reason, r.status " +
-                                       "FROM Report r " +
-                                       "JOIN Listing l ON r.listing_id = l.listing_id " +
-                                       "WHERE r.status != 'Resolved'";
-
-                        ps = conn.prepareStatement(query);
-                        rs = ps.executeQuery();
-
-                        if (!rs.next()) {
-                            out.println("<tr><td colspan='6'>No unresolved reports found.</td></tr>");
+                        if (!rs.isBeforeFirst()) {
+                            out.println("<tr><td colspan='5'>No unresolved reports found.</td></tr>");
                         } else {
-                            // Loop through the results and display them
-                            do {
+                            while (rs.next()) {
                                 int reportId = rs.getInt("report_id");
                                 int listingId = rs.getInt("listing_id");
-                                String productName = rs.getString("product_name");
-                                String reportReason = rs.getString("report_reason");
+                                String reason = rs.getString("report_reason");
                                 String status = rs.getString("status");
                 %>
-
                 <tr>
                     <td><%= reportId %></td>
                     <td><%= listingId %></td>
-                    <td><%= productName %></td>
-                    <td><%= reportReason %></td>
+                    <td><%= reason %></td>
                     <td><%= status %></td>
                     <td class="actions">
-                        <form action="AdminReportDashboard" method="post">
+                        <form action="AdminReportDashboard" method="post" style="margin: 0;">
                             <input type="hidden" name="report_id" value="<%= reportId %>">
-                            <button type="submit">Resolve</button>
+                            <select name="status">
+                                <option value="Reviewed">Reviewed</option>
+                                <option value="Resolved">Resolved</option>
+                            </select>
+                            <button type="submit">Update</button>
                         </form>
                     </td>
                 </tr>
-
-                <% 
-                            } while (rs.next());
+                <%
+                            }
                         }
                     } catch (SQLException e) {
-                        out.println("<tr><td colspan='6'><div class='error-message'>Error fetching reports: " + e.getMessage() + "</div></td></tr>");
-                    } finally {
-                        try {
-                            if (rs != null) rs.close();
-                            if (ps != null) ps.close();
-                            if (conn != null) conn.close();
-                        } catch (SQLException e) {
-                            out.println("<tr><td colspan='6'><div class='error-message'>Error closing database resources: " + e.getMessage() + "</div></td></tr>");
-                        }
+                        e.printStackTrace();
+                        out.println("<tr><td colspan='5' class='error-message'>Error loading reports: " + e.getMessage() + "</td></tr>");
                     }
                 %>
-                </tbody>
-            </table>
-        </div>
+            </tbody>
+        </table>
     </div>
 </body>
 </html>
-
