@@ -170,10 +170,11 @@
             <h2>Welcome to Your Grocery Gander Flea Market Profile!</h2>
 
             <div class="button-container">
-                <button class="icon-button" onclick="location.href='addProduct.jsp'">
-                    <i class="fas fa-plus-circle"></i>
-                    <div class="button-text">Add New Product</div>
-                </button>
+                <button class="icon-button" onclick="handleAddProduct()">
+    <i class="fas fa-plus-circle"></i>
+    <div class="button-text">Add New Product</div>
+</button>
+
 
                 <button class="icon-button" onclick="requestPermission()">
                     <i class="fas fa-user-check"></i>
@@ -212,24 +213,46 @@
     </div>
 
     <script>
-        function requestPermission() {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "SellRequest", true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    alert(xhr.responseText);
-                }
-            };
-            xhr.send();
-        }
+    function requestPermission() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "SellRequest", true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                alert(xhr.responseText);
+            }
+        };
+        xhr.send();
+    }
 
-        // Parallax effect
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const parallaxBg = document.querySelector('.parallax-bg');
-            parallaxBg.style.transform = `translateY(${scrolled * 0.5}px)`;
+    function checkApproval(callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "checkApprovalServlet", true); // Use a servlet to handle the check
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                callback(xhr.responseText === "approved"); // Call the callback with the result
+            }
+        };
+        xhr.send();
+    }
+
+    function handleAddProduct() {
+        checkApproval(function(isApproved) {
+            if (isApproved) {
+                window.location.href = 'addProduct.jsp';
+            } else {
+                alert('You are not approved to add products. Please request selling permission.');
+            }
         });
-    </script>
+    }
+
+    // Parallax effect
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const parallaxBg = document.querySelector('.parallax-bg');
+        parallaxBg.style.transform = `translateY(${scrolled * 0.5}px)`;
+    });
+</script>
+
 </body>
 </html>
 
